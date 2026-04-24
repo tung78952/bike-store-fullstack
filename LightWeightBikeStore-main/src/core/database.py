@@ -1,0 +1,34 @@
+from sqlalchemy import create_engine                 
+from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={
+        "sslmode": "require",       
+        "connect_timeout": 10,       
+    },
+    pool_pre_ping=True,              
+    pool_recycle=3600,               
+    pool_size=5,                      
+    max_overflow=10                   
+)
+
+# SessionLocal: Mỗi request dùng 1 session riêng, đóng sau khi xong
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Base: Cha của tất cả model ORM (class Product, Customer...) sẽ kế thừa từ Base
+Base = declarative_base()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db  
+    finally:
+        db.close()  
+        

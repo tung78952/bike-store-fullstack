@@ -1,0 +1,39 @@
+# === Monorepo root — only track README + the two app folders ===
+# Ignore everything at the monorepo root by default...
+/*
+
+# ...then re-include the essentials
+!/.gitignore
+!/README.md
+!/FE-BikeStore-main/
+!/LightWeightBikeStore-main/
+
+# === Global safety net (applies inside the two subfolders too) ===
+# Each subfolder has its own .gitignore, but we double up on the most
+# sensitive / heavy items so a missing pattern can't leak them.
+
+# Secrets
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Python
+**/.venv/
+**/venv/
+**/env/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Node / Vite
+**/node_modules/
+**/dist/
+**/build/
+
+# IDE / OS
+**/.vscode/
+**/.idea/
+**/.DS_Store
+**/Thumbs.db
+*.code-workspace
