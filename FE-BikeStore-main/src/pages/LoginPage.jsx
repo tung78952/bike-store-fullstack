@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { Button, Card, Input } from "../components/ui/Ui";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const { login, user } = useAuth();
   const [payload, setPayload] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -20,11 +19,8 @@ export default function LoginPage() {
   const onSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    const ok = await login(payload);
+    await login(payload);
     setLoading(false);
-    if (ok) {
-      navigate("/", { replace: true });
-    }
   };
 
   return (
