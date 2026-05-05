@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppShell from "./components/layout/AppShell";
 import { AdminRoute, ProtectedRoute } from "./auth/RouteGuards";
+import { useAuth } from "./auth/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import OrdersPage from "./pages/OrdersPage";
@@ -16,6 +17,13 @@ import AccessDeniedPage from "./pages/AccessDeniedPage";
 
 function AppLayout({ children }) {
   return <AppShell>{children}</AppShell>;
+}
+
+function RoleHomeRedirect() {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  return <Navigate to={user.role === "ADMIN" ? "/dashboard" : "/orders"} replace />;
 }
 
 export default function App() {
@@ -40,8 +48,8 @@ export default function App() {
         <Route path="/statistics" element={<AppLayout><StatisticsPage /></AppLayout>} />
       </Route>
 
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<RoleHomeRedirect />} />
+      <Route path="*" element={<RoleHomeRedirect />} />
     </Routes>
   );
 }

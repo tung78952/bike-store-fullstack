@@ -40,7 +40,7 @@ export default function StaffsPage() {
 
   const openEdit = (item) => {
     setEditing(item);
-    setForm({ ...defaultForm, ...item, password: "" });
+    setForm({ ...defaultForm, role: "STAFF", ...item, password: "" });
     setOpen(true);
   };
 

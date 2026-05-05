@@ -4,7 +4,7 @@ import { useAuth } from "../auth/AuthContext";
 
 export default function AccessDeniedPage() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <div className="app-shell-bg flex min-h-screen items-center justify-center p-4">
@@ -13,7 +13,7 @@ export default function AccessDeniedPage() {
         <h1 className="mt-2 font-headline text-4xl font-black text-primary">Access Denied</h1>
         <p className="mt-3 text-on-surface-variant">You do not have permission to access this feature.</p>
         <div className="mt-6 flex justify-center gap-2">
-          <Button onClick={() => navigate("/")}>Go to Home</Button>
+          <Button onClick={() => navigate(user?.role === "ADMIN" ? "/dashboard" : "/orders")}>Go to Home</Button>
           <Button
             variant="secondary"
             onClick={() => {
